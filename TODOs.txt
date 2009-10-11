@@ -1,0 +1,12 @@
+Plugin
+* Better / more complete tests
+* Gemified version etc: http://guides.rubyonrails.org/plugins.html
+* Good default parameters for localmemcache configuration
+* Documentation!
+* Some Rake tasks?
+
+Adjustment proposals for localmemcache
+* Do expiry handling inside the cache
+* Drop old entries instead of raising OutOfMemoryError
+* Add statistics: How much used / free memory?
+* delete_matched: Delete entries by regex
