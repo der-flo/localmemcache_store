@@ -1,9 +1,12 @@
 Plugin
 * Better / more complete tests
-* Gemified version etc: http://guides.rubyonrails.org/plugins.html
+* Stuff from http://guides.rubyonrails.org/plugins.html
 * Good default parameters for localmemcache configuration
-* Documentation!
+* Documentation! (README, Homepage, ...)
 * Some Rake tasks?
+* Statistics
+** Controller generator?
+** Via Rails Engines?
 
 Adjustment proposals for localmemcache
 * Do expiry handling inside the cache
