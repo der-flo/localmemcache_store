@@ -37,9 +37,11 @@ PKG_FILES = FileList[
   'test/**/*'
 ]
 
+# TODO: Dependency
+
 spec = Gem::Specification.new do |s|
   s.name = "localmemcache_store"
-  s.version = "0.0.1"
+  s.version = "0.0.2"
   s.author = "Florian Dütsch (der_flo)"
   s.email = "mail@florian-duetsch.de"
   s.homepage = "http://github.com/der-flo/localmemcache_store"

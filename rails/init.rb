@@ -1,1 +1,1 @@
-require 'active_support/cache/localmemcache_store'
+require 'localmemcache_store'
