@@ -30,7 +30,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title    = 'LocalmemcacheStore Documentation'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.options << '--charset' << 'utf-8'
-  rdoc.rdoc_files.include('README')
+  rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.rdoc_files.exclude('lib/localmemcache_store.rb')
 end
@@ -39,7 +39,7 @@ end
 # GEM stuff
 PKG_FILES = FileList[
   'MIT-LICENSE',
-  'README',
+  'README.rdoc',
   'lib/**/*',
   'rails/**/*',
   'test/**/*'
@@ -53,7 +53,7 @@ begin
     gemspec.homepage = "http://github.com/der-flo/localmemcache_store"
     gemspec.authors = ["Florian Dütsch (der_flo)"]
     gemspec.files = PKG_FILES.to_a
-    gemspec.extra_rdoc_files = ['README']
+    gemspec.extra_rdoc_files = ['README.rdoc']
     gemspec.add_dependency('localmemcache', '>= 0.4.3')
   end
   Jeweler::GemcutterTasks.new

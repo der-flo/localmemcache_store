@@ -33,7 +33,7 @@ HFS+ is not that problem as long as you have enough free space on your disk.
 Next, install the gem:
   $ sudo gem install localmemcache_store --source http://gemcutter.org
 
-<b>Done.</b> Now enjoy your superfast new cache store!
+*Done.* Now enjoy your superfast new cache store!
 
 == Configuration
 There are configuration defaults to start quickly, but you should consider
