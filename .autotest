@@ -1,0 +1,7 @@
+# Simplicity
+# TODO: http://github.com/metaskills/autotest_railsplugin/blob/master/railsplugin.rb
+class Autotest
+  def test_files_for(filename)
+    return Dir["test/**/*_test.rb"]
+  end
+end

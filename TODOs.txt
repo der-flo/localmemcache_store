@@ -1,15 +1,24 @@
 Plugin
-* Better / more complete tests
-* Stuff from http://guides.rubyonrails.org/plugins.html
-* Good default parameters for localmemcache configuration
-* Documentation! (README, Homepage, ...)
-* Some Rake tasks?
-* Statistics
-** Controller generator?
-** Via Rails Engines?
+* Prio 1
+** Test, test, test!
+
+* Prio 2
+** Documentation
+*** Even more RDoc
+*** Homepage
+** Good default parameters for localmemcache configuration
+** Some Rake tasks?
+** Statistics
+*** Controller generator?
+*** Via Rails Engines?
+** A better .autotest file
+** Useful: http://guides.rubyonrails.org/plugins.html
+** Better / more complete tests, RCov
+** Create a rubyforge project
 
 Adjustment proposals for localmemcache
 * Do expiry handling inside the cache
 * Drop old entries instead of raising OutOfMemoryError
 * Add statistics: How much used / free memory?
-* delete_matched: Delete entries by regex
+* Version bump
+* ExpiryCache has no method #delete

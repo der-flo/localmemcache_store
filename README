@@ -1,16 +1,67 @@
 NOT READY YET! COME BACK IN SOME DAYS.
 
+= LocalmemcacheStore
 
-LocalmemcacheStore
-==================
+LocalmemcacheStore[http://github.com/der-flo/localmemcache_store]
+is an ActiveSupport::Cache::Store implementation to be able to use
+Localmemcache[http://localmemcache.rubyforge.org/] in Rails.
 
-Introduction goes here.
+Localmemcache is an ultra-fast[http://localmemcache.rubyforge.org/#performance]
+and lightweight alternative to Memcached[http://www.danga.com/memcached/]
+for your Rails application.
+Localmemcache runs inside your Rails processes, so you don't need to
+run any extra daemons. The configuration is done inside your app and
+is an absolutely no-brainer.
+As the name says, the cache can only be shared on your local machine
+(at the time), but for your small apps scaling/networking often is
+not needed. Thanks to Rails'
+Cache::Store[http://api.rubyonrails.org/classes/ActiveSupport/Cache/Store.html]
+interface, switching later is no big deal.
 
+Please read the requirements[http://www.danga.com/memcached/] of
+Localmemcache carefully!
+In production you should use a 64bit Linux variant.
+Developing on Mac OS X is okay, the missing sparse file support of
+HFS+ is not that problem as long as you have enough free space on your disk.
 
-Example
-=======
+== Installation and usage
+  Rails::Initializer.run do |config|
+    [...]
+    config.gem 'localmemcache_store', :source => 'http://gemcutter.org' 
+    config.cache_store = :localmemcache_store
+  end
+Next, install the gem:
+  $ sudo gem install localmemcache_store --source http://gemcutter.org
 
-Example goes here.
+<b>Done.</b> Now enjoy your superfast new cache store!
 
+== Configuration
+There are configuration defaults to start quickly, but you should consider
+these two parameters:
+* +:namespace+: Namespace to avoid name collisions when running multiple
+ Localmemcache environments on one machine. (Defaults to +:lmc_store+.)
+* +:size_mb+: Specify the cache size in megabytes. Since the memory is
+  used only virtually, you can feel free to use great values like 4096 ;-).
+  Remember that this eats up your address space on 32bit systems.
+  (Defaults to 128).
+A configuration could look like this:
+ config.cache_store = :localmemcache_store,
+                      { :namespace => 'testapp', :size_mb => 256 }
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+== Further usage
+You can find a good Rails caching intro at
+RailsGuides[http://guides.rubyonrails.org/caching_with_rails.html],
+they do a better job than me ;-).
+
+The only specific enhancement with the ActiveSupport::Cache::Store
+implementation is the ability to use time based expiration in just the way the
+Memcached implementation does.
+See ActiveSupport::Cache::LocalmemcacheStore#write.
+
+== Feedback
+Please provide feedback! Your ideas, error reports and feature requests
+are very welcome. Please contact me via
+Github[http://github.com/der-flo/localmemcache_store].
+
+---
+Copyright (c) 2009 Florian Dütsch, released under the MIT license

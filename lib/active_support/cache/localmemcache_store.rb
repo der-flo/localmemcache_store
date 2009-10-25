@@ -8,17 +8,26 @@ end
 module ActiveSupport::Cache
   class LocalmemcacheStore < Store
     
-    DataExpiresPair = Struct.new(:data, :expires_at)
-    
+    DataExpiresPair = Struct.new(:data, :expires_at) #:nodoc:
+
+    # Useful options:
+    # * +:namespace+: Namespace to avoid name collisions, defaults to
+    #   +:lmc_store+.
+    #
+    #   This is escpecially useful if to run seperated caches on one machine.   
+    # * +:size_mb+: Size of the cache, defaults to +128+.
     def initialize options = {}
-      # TODO: Define default parameters
       options.reverse_merge!({
-        :namespace => :x,
-        :size_mb => 64
+        :namespace => :lmc_store,
+        :size_mb => 128
       })
-      @lmc = LocalMemCache::SharedObjectStorage.new options
+      @size_mb = options[:size_mb]
+      @lmc = LocalMemCache::ExpiryCache.new options
     end
 
+    # Reads a value by +name+.
+    #
+    # (options are ignored at the time)
     def read(name, options = nil)
       super
       data_expires_pair = @lmc[name]
@@ -29,13 +38,16 @@ module ActiveSupport::Cache
          data_expires_pair.expires_at <= Time.now
          
         # delete entry from database
-        @lmc.delete(name)
+        @lmc.hash.delete(name)
         nil
       else
         data_expires_pair.data
       end
     end
 
+    # Writes a +name+-+value+ pair to the cache.
+    # Useful options:
+    # * +:expires_in+: Number of seconds an entry is valid
     def write(name, value, options = {})
       super
       data = value.freeze
@@ -47,27 +59,33 @@ module ActiveSupport::Cache
       data
     end
 
+    # Delete a pair by key name
+    #
+    # (options are ignored at the time)
     def delete(name, options = nil)
       super
       @lmc.delete(name)
     end
 
+    # Delete all pair with key matching matcher
+    #
+    # (options are ignored at the time)
     def delete_matched(matcher, options = nil)
       super
-      # TODO: Performance?
       @lmc.each_pair do |key, value|
-        next unless key =~ matcher
-        @lmc.delete(key)
+        @lmc.delete(key) if key =~ matcher
       end
     end
 
-    def exist?(name,options = nil)
+    # Checks key for existance 
+    #
+    # (options are ignored at the time)
+    def exist?(name, options = nil)
       super
-      # TODO: Performance?
-      # Read the value and check for nil?
-      @lmc.keys.include?(name)
+      !@lmc[name].nil?
     end
 
+    # Clears the entire cache.
     def clear
       @lmc.clear
     end

@@ -1,6 +1,5 @@
+require File.dirname(__FILE__) + '/test_helper'
 require File.dirname(__FILE__) + '/cache_store_behavior.rb'
-require 'test_helper'
-require 'active_support/cache/localmemcache_store'
 
 # Most tests borrowed from the Rails tests
 # http://github.com/rails/rails/blob/master/activesupport/test/caching_test.rb
@@ -8,12 +7,12 @@ require 'active_support/cache/localmemcache_store'
 class LocalmemcacheStoreTest < ActiveSupport::TestCase
 
   def setup
-    @cache = ActiveSupport::Cache.lookup_store(:localmemcache_store)
+    @cache = ActiveSupport::Cache.lookup_store(:localmemcache_store, { :namespace => 'lmc_store_test' })
     @cache.clear
     @cache.silence!
     @cache.logger = Logger.new("/dev/null")
   end
-  
+
   test "write a value to the cache" do
     assert_nothing_raised do
       value = :value
@@ -21,7 +20,7 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
       assert_equal ret, value
     end
   end
-  
+
   test "read a cached value" do
     assert_nothing_raised do
       value = :value
@@ -29,7 +28,7 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
       assert_equal value, @cache.read(:key)
     end
   end
-  
+
   test "entry expires" do
     value = :value
     @cache.write :key, value, :expires_in => 1.second
@@ -37,9 +36,9 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
     sleep 2
     assert_nil @cache.read(:key)
   end
-  
+
   include CacheStoreBehavior
-  
+
   def test_store_objects_should_be_immutable
     @cache.write('foo', 'bar')
     @cache.read('foo').gsub!(/.*/, 'baz')
