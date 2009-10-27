@@ -14,7 +14,6 @@ Plugin
 ** A better .autotest file
 ** Useful: http://guides.rubyonrails.org/plugins.html
 ** Better / more complete tests, RCov
-** Create a rubyforge project
 
 Adjustment proposals for localmemcache
 * Do expiry handling inside the cache
