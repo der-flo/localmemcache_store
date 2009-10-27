@@ -38,9 +38,9 @@ Next, install the gem:
 == Configuration
 There are configuration defaults to start quickly, but you should consider
 these two parameters:
-* +:namespace+: Namespace to avoid name collisions when running multiple
- Localmemcache environments on one machine. (Defaults to +:lmc_store+.)
-* +:size_mb+: Specify the cache size in megabytes. Since the memory is
+* +:namespace+ : Namespace to avoid name collisions when running multiple
+  Localmemcache environments on one machine. (Defaults to +:lmc_store+.)
+* +:size_mb+ : Specify the cache size in megabytes. Since the memory is
   used only virtually, you can feel free to use great values like 4096 ;-).
   Remember that this eats up your address space on 32bit systems.
   (Defaults to 128).
@@ -56,7 +56,7 @@ they do a better job than me ;-).
 The only specific enhancement with the ActiveSupport::Cache::Store
 implementation is the ability to use time based expiration in just the way the
 Memcached implementation does.
-See ActiveSupport::Cache::LocalmemcacheStore#write.
+See ActiveSupport::Cache::LocalmemcacheStore#write .
 
 == Feedback
 Please provide feedback! Your ideas, error reports and feature requests
