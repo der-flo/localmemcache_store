@@ -56,4 +56,20 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
     assert result
   end
 
+  test "has status" do
+    assert_not_nil @cache.status
+  end
+  test "status has free_bytes" do
+    assert_not_nil @cache.status[:free_bytes]
+  end
+  test "status has used_bytes" do
+    assert_not_nil @cache.status[:used_bytes]    
+  end
+  test "status has total_bytes" do
+    assert_not_nil @cache.status[:total_bytes]
+  end
+  test "status has usage" do
+    assert_not_nil @cache.status[:usage]
+  end
+
 end

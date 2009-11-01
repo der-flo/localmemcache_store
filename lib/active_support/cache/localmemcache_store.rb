@@ -89,5 +89,13 @@ module ActiveSupport::Cache
     def clear
       @lmc.clear
     end
+
+    # Returns the status of the cache in form of a hash. Elements are:
+    # +:free_bytes+, +:used_bytes+, +:total_bytes+ and +:usage+
+    def status
+      s = @lmc.hash.shm_status
+      s[:usage] = s[:used_bytes].to_f / s[:total_bytes].to_f
+      s
+    end
   end
 end
