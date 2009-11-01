@@ -17,7 +17,4 @@ Plugin
 
 Adjustment proposals for localmemcache
 * Do expiry handling inside the cache
-* Drop old entries instead of raising OutOfMemoryError
-* Add statistics: How much used / free memory?
 * Version bump
-* ExpiryCache has no method #delete
