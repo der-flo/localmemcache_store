@@ -43,7 +43,7 @@ these two parameters:
 * +:size_mb+: Specify the cache size in megabytes. Since the memory is
   used only virtually, you can feel free to use great values like 4096 ;-).
   Remember that this eats up your address space on 32bit systems.
-  (Defaults to 128).
+  (Defaults to 64).
 A configuration could look like this:
  config.cache_store = :localmemcache_store,
                       { :namespace => 'testapp', :size_mb => 256 }

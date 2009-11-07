@@ -15,11 +15,11 @@ module ActiveSupport::Cache
     #   +:lmc_store+.
     #
     #   This is escpecially useful if to run seperated caches on one machine.   
-    # * +:size_mb+: Size of the cache, defaults to +128+.
+    # * +:size_mb+: Size of the cache, defaults to +64+.
     def initialize options = {}
       options.reverse_merge!({
         :namespace => :lmc_store,
-        :size_mb => 128
+        :size_mb => 64
       })
       @size_mb = options[:size_mb]
       @lmc = LocalMemCache::ExpiryCache.new options
@@ -82,7 +82,7 @@ module ActiveSupport::Cache
     # (options are ignored at the time)
     def exist?(name, options = nil)
       super
-      !@lmc[name].nil?
+      @lmc.has_key?(name)
     end
 
     # Clears the entire cache.

@@ -6,7 +6,6 @@ Plugin
 ** Documentation
 *** Even more RDoc
 *** Homepage
-** Good default parameters for localmemcache configuration
 ** Some Rake tasks?
 ** Statistics
 *** Controller generator?
