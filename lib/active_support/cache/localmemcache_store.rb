@@ -1,20 +1,11 @@
-begin
-  gem 'localmemcache', '>=0.4.3'
-  require 'localmemcache'
-rescue LoadError
-  raise '"localmemcache>=0.4.3" gem is not installed!'
-end
-
 module ActiveSupport::Cache
   class LocalmemcacheStore < Store
-    
-    DataExpiresPair = Struct.new(:data, :expires_at) #:nodoc:
 
     # Useful options:
     # * +:namespace+: Namespace to avoid name collisions, defaults to
     #   +:lmc_store+.
     #
-    #   This is escpecially useful if to run seperated caches on one machine.   
+    #   This is especially useful if to run separated caches on one machine.   
     # * +:size_mb+: Size of the cache, defaults to +64+.
     def initialize options = {}
       options.reverse_merge!({
@@ -22,7 +13,7 @@ module ActiveSupport::Cache
         :size_mb => 64
       })
       @size_mb = options[:size_mb]
-      @lmc = LocalMemCache::ExpiryCache.new options
+      @cache = ExpiryCache.new options
     end
 
     # Reads a value by +name+.
@@ -30,19 +21,7 @@ module ActiveSupport::Cache
     # (options are ignored at the time)
     def read(name, options = nil)
       super
-      data_expires_pair = @lmc[name]
-      return nil unless data_expires_pair
-      
-      # entry expired?
-      if data_expires_pair.expires_at &&
-         data_expires_pair.expires_at <= Time.now
-         
-        # delete entry from database
-        @lmc.hash.delete(name)
-        nil
-      else
-        data_expires_pair.data
-      end
+      @cache.read name
     end
 
     # Writes a +name+-+value+ pair to the cache.
@@ -50,13 +29,7 @@ module ActiveSupport::Cache
     # * +:expires_in+: Number of seconds an entry is valid
     def write(name, value, options = {})
       super
-      data = value.freeze
-      expires_in = options[:expires_in]
-      expires_at = if expires_in && expires_in.to_i > 0
-        Time.now + expires_in.to_i
-      end
-      @lmc[name] = DataExpiresPair.new(data, expires_at)
-      data
+      @cache.write name, value, options[:expires_in]
     end
 
     # Delete a pair by key name
@@ -64,7 +37,7 @@ module ActiveSupport::Cache
     # (options are ignored at the time)
     def delete(name, options = nil)
       super
-      @lmc.delete(name)
+      @cache.delete name
     end
 
     # Delete all pair with key matching matcher
@@ -72,9 +45,7 @@ module ActiveSupport::Cache
     # (options are ignored at the time)
     def delete_matched(matcher, options = nil)
       super
-      @lmc.each_pair do |key, value|
-        @lmc.delete(key) if key =~ matcher
-      end
+      @cache.delete_matched matcher
     end
 
     # Checks key for existance 
@@ -82,18 +53,18 @@ module ActiveSupport::Cache
     # (options are ignored at the time)
     def exist?(name, options = nil)
       super
-      @lmc.has_key?(name)
+      @cache.has_key?(name)
     end
 
     # Clears the entire cache.
     def clear
-      @lmc.clear
+      @cache.clear
     end
 
     # Returns the status of the cache in form of a hash. Elements are:
     # +:free_bytes+, +:used_bytes+, +:total_bytes+ and +:usage+
     def status
-      s = @lmc.hash.shm_status
+      s = @cache.shm_status
       s[:usage] = s[:used_bytes].to_f / s[:total_bytes].to_f
       s
     end

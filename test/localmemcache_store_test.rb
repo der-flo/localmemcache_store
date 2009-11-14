@@ -7,7 +7,8 @@ require File.dirname(__FILE__) + '/cache_store_behavior.rb'
 class LocalmemcacheStoreTest < ActiveSupport::TestCase
 
   def setup
-    @cache = ActiveSupport::Cache.lookup_store(:localmemcache_store, { :namespace => 'lmc_store_test' })
+    @cache = ActiveSupport::Cache.lookup_store(:localmemcache_store,
+      { :namespace => 'lmc_store_test' })
     @cache.clear
     @cache.silence!
     @cache.logger = Logger.new("/dev/null")
@@ -35,6 +36,30 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
     assert_equal :value, @cache.read(:key)
     sleep 2
     assert_nil @cache.read(:key)
+  end
+  
+  test "delete an entry" do
+    @cache.write :key, :value
+    @cache.delete :key
+    assert_nil @cache.read(:key)
+  end
+  
+  test "entry exists" do
+    assert !@cache.exist?(:foo)
+    @cache.write :foo, :bar
+    assert @cache.exist?(:foo)
+  end
+  
+  test "delete entries by regex" do
+    @cache.write :foo1, :bar
+    @cache.write :foo2, :bar
+    @cache.write :baz, :bar
+
+    @cache.delete_matched /^foo/
+    
+    assert !@cache.exist?(:foo1)
+    assert !@cache.exist?(:foo2)
+    assert @cache.exist?(:baz)
   end
 
   include CacheStoreBehavior
@@ -71,5 +96,4 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
   test "status has usage" do
     assert_not_nil @cache.status[:usage]
   end
-
 end

@@ -40,6 +40,7 @@ end
 PKG_FILES = FileList[
   'MIT-LICENSE',
   'README.rdoc',
+  'VERSION',
   'lib/**/*',
   'rails/**/*',
   'test/**/*'
@@ -54,7 +55,7 @@ begin
     gemspec.authors = ["Florian Dütsch (der_flo)"]
     gemspec.files = PKG_FILES.to_a
     gemspec.extra_rdoc_files = ['README.rdoc']
-    gemspec.add_dependency('localmemcache', '>= 0.4.3')
+    gemspec.add_dependency('localmemcache', '>= 0.4.4')
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

@@ -1,19 +1,14 @@
-Plugin
-* Prio 1
-** Test, test, test!
+Prio 1
+* Test, test, test!
 
-* Prio 2
-** Documentation
-*** Even more RDoc
-*** Homepage
-** Some Rake tasks?
-** Statistics
-*** Controller generator?
-*** Via Rails Engines?
-** A better .autotest file
-** Useful: http://guides.rubyonrails.org/plugins.html
-** Better / more complete tests, RCov
-
-Adjustment proposals for localmemcache
-* Do expiry handling inside the cache
-* Version bump
+Prio 2
+* Performance optimizations
+* Documentation
+** Even more RDoc
+** Homepage
+* Some Rake tasks?
+** Clear cache
+** expire entries
+* A better .autotest file
+* Useful: http://guides.rubyonrails.org/plugins.html
+* Better / more complete tests, RCov
