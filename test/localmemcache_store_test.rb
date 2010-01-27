@@ -96,4 +96,17 @@ class LocalmemcacheStoreTest < ActiveSupport::TestCase
   test "status has usage" do
     assert_not_nil @cache.status[:usage]
   end
+  
+  test "specifing a filename is not overridden by the standard namespace" do
+    ExpiryCache.expects(:new).with(Not(has_entries(:namespace => :lmc_store)))
+    cache = ActiveSupport::Cache.lookup_store(:localmemcache_store,
+      { :filename => 'alternative_test_file' })
+  end
+  test "specifing a namespace is not overridden" do
+    mock = ExpiryCache.expects(:new)
+    mock.with(all_of(has_entries(:namespace => :alternative),
+                     Not(has_entries(:namespace => :lmc_store))))
+    cache = ActiveSupport::Cache.lookup_store(:localmemcache_store,
+      { :namespace => :alternative })
+  end
 end

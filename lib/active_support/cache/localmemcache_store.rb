@@ -8,10 +8,8 @@ module ActiveSupport::Cache
     #   This is especially useful if to run separated caches on one machine.   
     # * +:size_mb+: Size of the cache, defaults to +64+.
     def initialize options = {}
-      options.reverse_merge!({
-        :namespace => :lmc_store,
-        :size_mb => 64
-      })
+      options[:size_mb] ||= 64
+      options[:namespace] ||= :lmc_store if options[:filename].blank?
       @size_mb = options[:size_mb]
       @cache = ExpiryCache.new options
     end
